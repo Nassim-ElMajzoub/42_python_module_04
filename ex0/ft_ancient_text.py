@@ -1,19 +1,21 @@
 #!/usr/bin/env python3
 
 
-def ft_ancient_text_recovery() -> None:
-    print("=== CYBER ARCHIVES - DATA RECOVERY SYSTEM ===")
-    print("\nAccessing Storage Vault: ancient_fragment.txt")
-    try:
-        file = open('ancient_fragment.txt', 'r')
-        print("Connection established...\n")
-        print("RECOVERED DATA:")
-        print(file.read())
-        file.close()
-        print("\nData recovery complete. Storage unit disconnected.")
-    except OSError:
-        print("ERROR: Storage vault not found")
+import sys
 
 
 if __name__ == "__main__":
-    ft_ancient_text_recovery()
+    if len(sys.argv) < 2:
+        print("Usage: ft_ancient_text.py <file>")
+    else:
+        print("=== Cyber Archives Recovery ===")
+        print(f"Accessing file '{sys.argv[1]}'")
+        try:
+            file = open(sys.argv[1], 'r')
+            print("---")
+            print(file.read())
+            print("---")
+            file.close()
+            print(f"File '{sys.argv[1]}' closed.")
+        except (FileNotFoundError, PermissionError) as e:
+            print(f"Error opening file '{sys.argv[1]}': {e}")
