@@ -16,7 +16,7 @@ Starting with basic file reading and progressing through writing, stream managem
 - Practice defensive programming and input validation
 - Develop skills in building resilient data pipelines
 
-The project consists of 5 exercises (0-4) that progressively introduce file operation concepts, culminating in a comprehensive crisis response system demonstrating all techniques combined.
+The project consists of 4 exercises (0-3) that progressively introduce file operation concepts, culminating in a comprehensive crisis response system demonstrating all techniques combined.
 
 ---
 
@@ -36,12 +36,12 @@ The project consists of 5 exercises (0-4) that progressively introduce file oper
 **Key Learning:** Programs can read data from files using `open()`, `read()`, and `close()`. Proper error handling with `except FileNotFoundError` prevents crashes when files are missing. Always close file handles after use to free system resources.
 
 ### Exercise 1: Archive Creation
-**Concepts:** File writing, `open()` in write mode (`'w'`), `write()`, `OSError` handling, `finally` blocks for guaranteed cleanup
+**Concepts:** File writing, `open()` in write mode (`'w'`), `write()`, `OSError` handling
 
-**Key Learning:** Write mode (`'w'`) creates new files or overwrites existing ones. The `finally` block guarantees file closure even when errors occur mid-operation. `OSError` catches permission errors and other OS-level failures during file operations.
+**Key Learning:** Write mode (`'w'`) creates new files or overwrites existing ones. `OSError` catches permission errors and other OS-level failures during file operations.
 
 ### Exercise 2: Stream Management
-**Concepts:** Standard streams (`sys.stdin`, `sys.stdout`, `sys.stderr`), `input()`, stream separation, type hints
+**Concepts:** Standard streams (`sys.stdin`, `sys.stdout`, `sys.stderr`), `input()`, stream separation
 
 **Key Learning:** Every program has three standard streams - stdin for input, stdout for normal output, and stderr for error/alert output. `input()` is a higher-level wrapper around `sys.stdin` that displays prompts and strips newlines automatically. Separating normal output from alerts allows tools and pipelines to handle them independently.
 
@@ -50,18 +50,12 @@ The project consists of 5 exercises (0-4) that progressively introduce file oper
 
 **Key Learning:** The `with` statement is Python's context manager protocol - it guarantees files are closed automatically even if errors occur, replacing the manual `open()`/`close()` pattern. The `try` block must wrap the `with` statement so that errors during `open()` itself are also caught. This is the professional standard for all file operations.
 
-### Exercise 4: Crisis Response
-**Concepts:** Combined `with` and `try/except`, multiple exception types (`FileNotFoundError`, `PermissionError`, `OSError`), separation of concerns, crisis handler function, `sys.stderr` for alerts
-
-**Key Learning:** Real systems must handle multiple failure modes gracefully. Separating the crisis handler logic into its own function makes code reusable and maintainable. Routing crisis alerts to `sys.stderr` and normal output to `sys.stdout` follows Unix conventions and allows proper stream handling by calling systems.
-
 ---
 
 ## Key Programming Principles Demonstrated
 
 ### 1. **Resource Management**
 - Always close files after use
-- Use `finally` blocks for guaranteed cleanup
 - Use `with` statements as the Pythonic standard for file handling
 - Prevent resource leaks that could corrupt data
 
@@ -79,53 +73,8 @@ The project consists of 5 exercises (0-4) that progressively introduce file oper
 
 ### 4. **Progressive Error Handling**
 - Basic `try/except` for simple cases
-- `finally` blocks for guaranteed cleanup
 - `with` statements for automatic resource management
 - Combined `with` + `try/except` for maximum safety
-
----
-
-## File Operation Patterns
-
-### Basic File Reading
-```python
-file = open('data.txt', 'r')
-content = file.read()
-print(content)
-file.close()
-```
-
-### Basic File Writing
-```python
-try:
-    file = open('data.txt', 'w')
-    file.write("Hello, Archives!\n")
-except OSError as e:
-    print(e)
-finally:
-    file.close()  # Always runs
-```
-
-### Context Manager (Recommended)
-```python
-try:
-    with open('data.txt', 'r') as file:
-        content = file.read()
-        print(content)
-except FileNotFoundError:
-    print("ERROR: File not found")
-except PermissionError:
-    print("ERROR: Access denied")
-```
-
-### Stream Management
-```python
-import sys
-
-archivist_id = input("Enter archivist ID: ")          # reads from stdin
-sys.stdout.write(f"[STANDARD] Hello, {archivist_id}\n")  # normal output
-sys.stderr.write("[ALERT] System diagnostic complete\n")  # error/alert output
-```
 
 ---
 
@@ -139,10 +88,7 @@ sys.stderr.write("[ALERT] System diagnostic complete\n")  # error/alert output
 - ✅ Context managers with the `with` statement
 - ✅ Automatic resource cleanup (RAII principle)
 - ✅ Exception handling (`FileNotFoundError`, `PermissionError`, `OSError`)
-- ✅ `finally` blocks for guaranteed cleanup
 - ✅ Type hints on all functions
-- ✅ Separation of concerns with handler functions
-- ✅ Crisis response and fault-tolerant system design
 - ✅ PEP 8 compliance and professional code style
 
 ---
@@ -185,19 +131,14 @@ AI (Claude by Anthropic) was used as an **interactive learning assistant** throu
 #### 2. **Syntax Clarification**
 - **What:** Correct Python syntax for `with` statements, `sys.stdout.write()`, type hints
 - **How:** Learning proper patterns through targeted questions and examples
-- **Which parts:** Exercises 2-4 - advanced syntax for streams and context managers
+- **Which parts:** Exercises 2-3 - advanced syntax for streams and context managers
 
 #### 3. **Debugging Guidance**
 - **What:** Understanding why code wasn't working as expected
 - **How:** Discussing issues like incorrect `try/with` ordering, bare `except` blocks, hardcoded values
 - **Which parts:** All exercises - identifying structural and logic issues
 
-#### 4. **Design Pattern Discussion**
-- **What:** When to use `finally` vs `with`, when to separate concerns into handler functions
-- **How:** Understanding trade-offs through concrete examples from the exercises
-- **Which parts:** Exercises 1, 4 - architectural decisions about error handling and function design
-
-#### 5. **Code Review**
+#### 4. **Code Review**
 - **What:** Feedback on implementation correctness and code quality
 - **How:** Identifying issues like missing type hints, unnecessary f-strings, wrong exception types
 - **Which parts:** All exercises - ensuring correct patterns and clean code
@@ -234,16 +175,6 @@ Every piece of code submitted represents my understanding and ability to work wi
 This project provided comprehensive mastery of Python's file operations and resource management patterns. Starting from basic file reading and progressing through writing, stream management, context managers, and crisis response systems, each exercise built essential skills for professional data engineering.
 
 The Cyber Archives theme made abstract concepts concrete: reading ancient fragments demonstrated file I/O, creating new archives showed write operations, managing communication channels illustrated stream separation, vault security protocols introduced context managers, and crisis response combined everything into a fault-tolerant system.
-
-**Key Insights:**
-
-**Resource Management is Non-Negotiable:** Every opened file must be closed. The progression from manual `close()` to `finally` blocks to `with` statements showed three generations of solving the same problem, each more robust than the last.
-
-**Stream Separation Matters:** Routing normal output to stdout and alerts to stderr isn't just convention - it enables programs to be composed into pipelines where errors can be filtered and handled independently from normal data flow.
-
-**Context Managers are the Professional Standard:** The `with` statement elegantly solves resource management through the RAII principle. Once understood, there's no reason to use manual `open()`/`close()` for file operations.
-
-**Separation of Concerns Scales:** The crisis handler pattern in Exercise 4 demonstrated how separating logic into focused functions makes code reusable, testable, and maintainable - a pattern that applies far beyond file operations.
 
 The skills acquired here - from basic file I/O to fault-tolerant crisis response systems - form the foundation for building reliable data pipelines that handle real-world failures gracefully.
 
